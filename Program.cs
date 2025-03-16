@@ -23,6 +23,7 @@ internal record Vector2i
 
 internal class Program
 {
+    // Parameters
     const int width = 40;
     const int height = 20;
     const int cellWidth = 2;
@@ -31,7 +32,6 @@ internal class Program
     {
         // Determine position to spawn @
         Vector2i target = Vector2i.GetRandom(width, height);
-
 
         PrintHeader();
         PrintBoard(target);
