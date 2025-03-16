@@ -44,7 +44,7 @@ internal class Program
         } else
         {
             Console.WriteLine("Wrong answer!");
-            Console.WriteLine("Correct answer: " + target.x.ToString() + " " + target.y.ToString());
+            Console.WriteLine("Correct answer: " + (target.x + 1).ToString() + " " + (height - target.y).ToString());
         }
 
         // Wait for keypress before we close the console
@@ -54,7 +54,7 @@ internal class Program
     private static void PrintHeader()
     {
         // Start with empty space to compensate for row headers
-        String header = "".PadRight(cellWidth * 2 + 2);
+        String header = "".PadRight(cellWidth * 2);
 
         // Create header number for every second column
         for (int i = 0; i < width; i += 2)
@@ -68,27 +68,33 @@ internal class Program
 
     private static void PrintBoard(Vector2i target)
     {
+        ConsoleColor initialColor = Console.ForegroundColor;
         // Used to generate random chars
         Random r = new();
         // Iterate by line
         for (int y = 0; y < height; y++)
         {
-            // Start line with row header
-            String line = (height - y).ToString().PadLeft(cellWidth) + "- ";
+            // Print row header
+            Console.Write((height - y).ToString().PadLeft(cellWidth) + "-".PadRight(cellWidth));
             // Generate random line
             for (int x = 0; x < width; x++)
             {
+                // Change to a random color
+                Console.ForegroundColor = (ConsoleColor)r.Next(1, 15);
                 // Check if character should be replaced with @
                 if (y == target.y && x == target.x)
                 {
-                    line += "@";
-                    continue;
+                    Console.Write("@".PadRight(cellWidth));
+                } else
+                {
+                    // Add random character to line
+                    Console.Write(Convert.ToChar(r.Next(65, 91)).ToString().PadRight(cellWidth));
                 }
-                // Add random character to line
-                line += Convert.ToChar(r.Next(65, 91)).ToString().PadRight(cellWidth);
+                // Switch console color back to normal
+                Console.ForegroundColor = initialColor;
             }
-
-            Console.WriteLine(line);
+            // Go to next line
+            Console.WriteLine();
         }
     }
 
@@ -128,7 +134,7 @@ internal class Program
             }
 
             // Return true if all was succesfull
-            return new Vector2i(x, height-y);
+            return new Vector2i(x-1, height-y);
         }
     }
 
